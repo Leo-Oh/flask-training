@@ -11,14 +11,14 @@ jobs:
     - uses: actions/checkout@v2
     - name: make .env
       uses: SpicyPizza/create-envfile@v1.3
-      #with:
-    #- name: show dir, .env file
-    #  run: "cat .env \n#magic___^_^___line\n"
-    - name: Build the custom Docker image
-      #  envkey_DEV_DATABASE_URL: ${{ secrets.KAFKA_URL }}
-      #  file_name: .env
-      #  fail_on_empty: false
+      with:
+        envkey_DEV_DATABASE_URL: ${{ secrets.KAFKA_URL }}
+        file_name: .env
+        fail_on_empty: false
 
+    - name: show dir, .env file
+      run: "cat .env \n#magic___^_^___line\n"
+    - name: Build the custom Docker image
       run: docker build -t ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{github.sha}} .
 
     - name: show docker images

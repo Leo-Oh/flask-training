@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: python-flask
+  name: {model_name}-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: python-flask
+      app: {model_name}-server
   template:
     metadata:
       labels:
-        app: python-flask
+        app: {model_name}-server
     spec:
       containers:
-      - image: docker.io/adsoft/python-flask:{github.sha}
-        name: kafka-consumer
+      - image: docker.io/{docker_user}/{model_name}:{github.sha}
+        name: {model_name}-container
 #        envFrom:
 #        - configMapRef:
 #            name: adsoftsito-config
@@ -29,13 +29,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: python-flask
+  name:  {model_name}-service
   annotations:
     dev.okteto.com/auto-ingress: "true"
 spec:
   type: ClusterIP  
   ports:
-  - name: "python-flask"
+  - name:  {model_name}-service
     port: 5000
   selector:
-    app: python-flask
+    app:  {model_name}-server
